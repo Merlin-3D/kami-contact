@@ -24,6 +24,7 @@ function App() {
           </AuthProvider>
         </AuthMiddleware>
       </BrowserRouter>
+      <ToastContainer />
     </div>
   );
 }
