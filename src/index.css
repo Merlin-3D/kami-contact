@@ -1,0 +1,88 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Amaranth';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Amaranth'), url(../public/assets/fonts/amaranth/Amaranth-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Amaranth';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Amaranth'), url(../public/assets/fonts/amaranth/Amaranth-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Amaranth';
+  font-style: normal;
+  src: local('Amaranth'), url(../public/assets/fonts/amaranth/Amaranth-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  src: local('Inter'), url(../public/assets/fonts/inter/Inter-ExtraBold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Inter'), url(../public/assets/fonts/inter/Inter-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Inter'), url(../public/assets/fonts/inter/Inter-SemiBold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Inter'), url(../public/assets/fonts/inter/Inter-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Inter'), url(../public/assets/fonts/inter/Inter-Medium.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Inter'), url(../public/assets/fonts/inter/Inter-Light.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 200;
+  src: local('Inter'), url(../public/assets/fonts/inter/Inter-ExtraLight.ttf) format('truetype');
+}
+
+html {
+  background-color: rgb(241, 238, 238);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+body {
+  font-family: Inter;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}

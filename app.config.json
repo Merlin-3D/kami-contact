@@ -1,0 +1,12 @@
+{
+    "apps" : [
+      {
+        "name"      : "kami_contact_web",
+        "script"    : "npx",
+        "interpreter": "none",
+        "args": "serve -s build -l 3000"
+      }
+    ]
+  }
+  
+  
