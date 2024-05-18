@@ -61,14 +61,15 @@ export function CreateCommand({
       mutationFn: (commandeRequest: CommandeRequest) => {
         return createCommande(commandeRequest);
       },
-      onSuccess(data) {
-        if (data) {
+      async onSuccess(res) {
+        if (res.status === 201) {
+          const data = await res.json();
           toast("Commande ajouter", { type: "success" });
           const commandeRequest = data as CommandeResponse;
           dispatch!(commandeRequest);
           handleOpen();
         } else {
-          setErrorMessage(data.message);
+          setErrorMessage("Echet d'enregistrement de la commande.");
           setOpenAlert(true);
         }
       },
@@ -82,14 +83,15 @@ export function CreateCommand({
       mutationFn: (commandeUpdate: CommandeUpdateRequest) => {
         return updateCommande(commandeUpdate.id, commandeUpdate);
       },
-      onSuccess(data) {
-        if (data) {
+      async onSuccess(res) {
+        if (res.status === 200) {
+          const data = await res.json();
           toast("Commande mise a jour", { type: "success" });
           const commande = data as CommandeResponse;
           dispatch!(commande);
           handleOpen();
         } else {
-          setErrorMessage(data.message);
+          setErrorMessage("Echec de mise a jour");
           setOpenAlert(true);
         }
       },

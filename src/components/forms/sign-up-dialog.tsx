@@ -56,14 +56,22 @@ export function SignUpDialog({
       mutationFn: (contactRequest: ContactRequest) => {
         return createContact(contactRequest);
       },
-      onSuccess(data) {
-        if (data) {
+      async onSuccess(res) {
+        if (res.status === 201) {
           toast("Contact ajouter", { type: "success" });
+          const data = await res.json();
           const contact = data as ContactResponse;
           dispatch!(contact);
           handleOpen();
         } else {
-          setErrorMessage(data.message);
+          const message = (await res.json()).message;
+
+          if (message.includes("constraint failed: contacts.phone")) {
+            setErrorMessage("Le télèphone est déja utilisé.");
+          } else {
+            setErrorMessage("Erreur de lenregistrement du contact");
+          }
+
           setOpenAlert(true);
         }
       },
@@ -77,14 +85,22 @@ export function SignUpDialog({
       mutationFn: (contactUpdate: ContactUpdateRequest) => {
         return updateContact(contactUpdate.id, contactUpdate);
       },
-      onSuccess(data) {
-        if (data) {
+      async onSuccess(res) {
+        if (res.status === 200) {
           toast("Contact mise a jour", { type: "success" });
+          const data = await res.json();
           const user = data as User;
           dispatch!(user);
           handleOpen();
         } else {
-          setErrorMessage(data.message);
+          const message = (await res.json()).message;
+
+          if (message.includes("constraint failed: contacts.phone")) {
+            setErrorMessage("Le télèphone est déja utilisé.");
+          } else {
+            setErrorMessage("Erreur de lenregistrement du contact");
+          }
+
           setOpenAlert(true);
         }
       },
@@ -201,10 +217,10 @@ export function SignUpDialog({
               />
 
               <Typography className="-mb-2" variant="h6" placeholder={""}>
-                Ville
+                Pays / Ville
               </Typography>
               <Input
-                label="City"
+                label="Pays / Ville"
                 size="lg"
                 type="text"
                 required

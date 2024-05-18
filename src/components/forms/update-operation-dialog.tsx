@@ -40,12 +40,12 @@ export function UpdateOperationdDialog({
     mutationFn: (operation: Operation) => {
       return updateOperation(commandeId, operation);
     },
-    onSuccess(data) {
-      if (data) {
+    onSuccess(res) {
+      if (res.status === 200) {
         toast("Opération éffectuée", { type: "success" });
         handleOpen();
       } else {
-        setErrorMessage(data.message);
+        setErrorMessage("data.message");
         setOpenAlert(true);
       }
     },

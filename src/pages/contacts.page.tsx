@@ -41,6 +41,7 @@ export function ContactPage() {
   const [openSignUp, setOpenSignUp] = React.useState(false);
   const [openUpadeSignUp, setOpenUpdateSignUp] = React.useState(false);
   const [query, setQuery] = React.useState<string>("");
+  const [search, setSearch] = React.useState<string>("");
   const [contact, setContact] = React.useState<ContactResponse>();
   const [page, setPage] = React.useState<number>(1);
   const [open, setOpen] = React.useState(false);
@@ -64,7 +65,7 @@ export function ContactPage() {
         return deleteContact(userId);
       },
       onSuccess(data) {
-        if (!isNil(data)) {
+        if (data.status === 200) {
           refreshContacts();
           toast("Contact supprimer", { type: "success" });
           setOpen(!open);
@@ -106,27 +107,19 @@ export function ContactPage() {
     setOpen(true);
   }, []);
 
-  const handleSearch = React.useCallback(
-    (param: string) => {
-      if (isEmpty(param)) {
-        setFilteredContact(() => {
-          return [];
-        });
-      }
-      setFilteredContact(() => {
-        return contactsData!.filter((item) => {
-          return (
-            item.firstName!.toLowerCase().includes(param.toLowerCase()) ||
-            item.phone!.toLowerCase().includes(param.toLowerCase()) ||
-            item.city!.toLowerCase().includes(param.toLowerCase()) ||
-            item.lastName!.toLowerCase().includes(param.toLowerCase())
-          );
-        });
-      });
-    },
-    [contactsData]
-  );
-  const contacts = !isEmpty(filteredContact) ? filteredContact : contactsData!;
+  const handleSearch = React.useMemo(() => {
+    if (isEmpty(search)) {
+      return contactsData;
+    }
+    return contactsData!.filter((item) => {
+      return (
+        item.firstName!.toLowerCase().includes(search.toLowerCase()) ||
+        item.phone!.toLowerCase().includes(search.toLowerCase()) ||
+        item.city!.toLowerCase().includes(search.toLowerCase()) ||
+        item.lastName!.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+  }, [contactsData, search]);
 
   return (
     <>
@@ -165,7 +158,7 @@ export function ContactPage() {
                   <Input
                     label="Rechercher..."
                     crossOrigin={""}
-                    onChange={(e) => handleSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value)}
                     icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                   />
                 </div>
@@ -186,7 +179,7 @@ export function ContactPage() {
             <SpinnerLoader size="lg" />
           ) : (
             <CardBody placeholder={""} className="overflow-scroll px-0">
-              {!isEmpty(contacts) ? (
+              {!isEmpty(handleSearch) ? (
                 <table className="mt-4 w-full min-w-max table-auto text-left">
                   <thead>
                     <tr>
@@ -208,8 +201,8 @@ export function ContactPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {contacts?.map((item, index) => {
-                      const isLast = index === contacts.length - 1;
+                    {handleSearch?.map((item, index) => {
+                      const isLast = index === handleSearch.length - 1;
                       const classes = isLast
                         ? "p-4"
                         : "p-4 border-b border-blue-gray-50";

@@ -54,6 +54,7 @@ export function CommandesPage() {
   const [openUpadeSignUp, setOpenUpdateSignUp] = React.useState(false);
   const [openUpadePassword, setOpenUpdatePassword] = React.useState(false);
   const [query, setQuery] = React.useState<string>("");
+  const [search, setSearch] = React.useState<string>("");
   const [commande, setCommande] = React.useState<CommandeResponse>();
   const [page, setPage] = React.useState<number>(1);
   const [open, setOpen] = React.useState(false);
@@ -120,27 +121,18 @@ export function CommandesPage() {
     setOpenDrawer(true);
   }, []);
 
-  const handleSearch = React.useCallback(
-    (param: string) => {
-      if (isEmpty(param)) {
-        setFilteredCommande(() => {
-          return [];
-        });
-      }
-      setFilteredCommande(() => {
-        return commandesData!.filter((item) => {
-          return (
-            item.article!.toLowerCase().includes(param.toLowerCase()) ||
-            item.delivery!.toLowerCase().includes(param.toLowerCase())
-          );
-        });
-      });
-    },
-    [commandesData]
-  );
-  const commandes = !isEmpty(filteredCommandes)
-    ? filteredCommandes
-    : commandesData!;
+  const handleSearch = React.useMemo(() => {
+    if (isEmpty(search)) {
+      return commandesData;
+    }
+    return commandesData!.filter((item) => {
+      return (
+        item.article!.toLowerCase().includes(search.toLowerCase()) ||
+        item.delivery!.toLowerCase().includes(search.toLowerCase())
+      );
+    });
+  }, [commandesData, search]);
+
   return (
     <>
       <LayoutContent>
@@ -178,7 +170,7 @@ export function CommandesPage() {
                   <Input
                     label="Rechercher..."
                     crossOrigin={""}
-                    onChange={(e) => handleSearch(e.target.value)}
+                    onChange={(e) => setSearch(e.target.value)}
                     icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                   />
                 </div>
@@ -199,7 +191,7 @@ export function CommandesPage() {
             <SpinnerLoader size="lg" />
           ) : (
             <CardBody placeholder={""} className="overflow-scroll px-0">
-              {!isEmpty(commandes) ? (
+              {!isEmpty(handleSearch) ? (
                 <table className="mt-4 w-full min-w-max table-auto text-left">
                   <thead>
                     <tr>
@@ -221,9 +213,9 @@ export function CommandesPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {!isEmpty(commandes) ? (
-                      commandes?.map((item, index) => {
-                        const isLast = index === commandes.length - 1;
+                    {!isEmpty(handleSearch) ? (
+                      handleSearch?.map((item, index) => {
+                        const isLast = index === handleSearch.length - 1;
                         const classes = isLast
                           ? "p-4"
                           : "p-4 border-b border-blue-gray-50";

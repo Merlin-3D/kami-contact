@@ -29,8 +29,9 @@ export default function Login() {
       setOpen(true);
       return loginUser(login);
     },
-    onSuccess(data) {
-      if (data) {
+    async onSuccess(res) {
+      if (res.status === 200) {
+        const data = await res.json();
         const user = data as User;
         const token = data.token.token as string;
         Cookies.set(BEARER_TOKEN, token, { path: "/" });
@@ -46,14 +47,13 @@ export default function Login() {
       } else {
         setOpen(true);
         setMessages({
-          message: data.message,
+          message: "Echec de connexion verifier vos identifiants",
           type: "danger",
           color: "red",
         });
       }
     },
     onError(error) {
-      console.log(error.message);
       setMessages({
         message: error.message,
         type: "danger",
