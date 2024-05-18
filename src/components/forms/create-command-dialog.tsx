@@ -167,7 +167,7 @@ export function CreateCommand({
               >
                 {description}
               </Typography>
-              <div className="flex flex-col gap-4 h-[600px] overflow-auto">
+              <div className="flex flex-col gap-4 h-[450px] overflow-auto">
                 <AlertNotification
                   open={openAlert}
                   handleOpen={() => setOpenAlert(!openAlert)}
