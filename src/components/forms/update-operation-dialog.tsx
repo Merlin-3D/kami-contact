@@ -40,16 +40,19 @@ export function UpdateOperationdDialog({
     mutationFn: (operation: Operation) => {
       return updateOperation(commandeId, operation);
     },
-    onSuccess(res) {
-      if (res.status === 200) {
+    async onSuccess(res) {
+      if (res.status === 201) {
         toast("Opération éffectuée", { type: "success" });
         handleOpen();
       } else {
-        setErrorMessage("data.message");
+        const message = (await res.json()).message;
+        setErrorMessage(message);
         setOpenAlert(true);
       }
     },
-    onError(error) {},
+    onError(error) {
+      toast(error.message, { type: "error" });
+    },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
